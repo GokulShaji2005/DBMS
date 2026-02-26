@@ -1,0 +1,64 @@
+CREATE TABLE CUSTOMER(customer_id varchar(36),
+customer_name varchar(36),
+contactNumber INT ,
+address varchar(36),
+city varchar(36),
+postalCode INT ,
+country VARCHAR(36),
+PRIMARY KEY(customer_id)
+);
+CREATE TABLE EMPLOYEES(
+employee_id varchar(36),
+firstName varchar(36),
+lastName varchar(36),
+BirthDate varchar(36),
+photo varchar(36),
+primary key(employee_id)
+);
+
+
+CREATE TABLE ORDERS(
+order_id VARCHAR(36),
+customer_id varchar(36),
+employee_id varchar(36),
+orderDate date,
+shipperId varchar(36),
+primary key(order_id),
+foreign key (customer_id) references CUSTOMER,
+foreign key (employee_id) references EMPLOYEES
+);
+
+
+INSERT INTO CUSTOMER VALUES('CU120','Alia Hans','9876543210','Ramapuram','Pala',686651,'India');
+INSERT INTO CUSTOMER VALUES('CU121','Ranveer Singh','9876543211','Andheri','Mumbai',686652,'India');
+INSERT INTO CUSTOMER VALUES('CU123','Elon Musk','9876543212','Area-51','Califronia',686653,'USA');
+INSERT INTO CUSTOMER VALUES('CU124','Mohanlal','9876543213','Arcade villa','Kochi',686654,'India');
+INSERT INTO CUSTOMER VALUES('CU125','Lebron James','9876543214','Las Vegas','Caliofornia',686655,'USA');
+
+
+select * from customer;
+
+
+INSERT INTO EMPLOYEES VALUES('EU120','Sahal','Samad',TO_DATE('1999-02-21','YYYY-MM-DD'),'photo1');
+INSERT INTO EMPLOYEES VALUES('EU121','Amina','Khan',TO_DATE('2000-05-14','YYYY-MM-DD'),'photo2');
+INSERT INTO EMPLOYEES VALUES('EU122','Daniel','Smith',TO_DATE('1998-11-30','YYYY-MM-DD'),'photo3');
+INSERT INTO EMPLOYEES VALUES('EU123','Lina','Hassan',TO_DATE('2001-07-09','YYYY-MM-DD'),'photo4');
+INSERT INTO EMPLOYEES VALUES('EU124','Marcus','Johnson',TO_DATE('1997-03-18','YYYY-MM-DD'),'photo5');
+
+INSERT INTO ORDERS VALUES('10','CU120','EU120',TO_DATE('1999-02-21','YYYY-MM-DD'),'100');
+INSERT INTO ORDERS VALUES('11','CU121','EU121',TO_DATE('2000-06-15','YYYY-MM-DD'),'250');
+INSERT INTO ORDERS VALUES('13','CU124','EU123',TO_DATE('1998-12-05','YYYY-MM-DD'),'300');
+INSERT INTO ORDERS VALUES('15','CU125','EU122',TO_DATE('2002-04-10','YYYY-MM-DD'),'220');
+
+select * from customer ORDER BY customer_name;
+select * from orders ORDER BY ORDERDATE;
+select * from employees where BIRTHDATE>TO_DATE('1980-12-31','YYYY-MM-DD') ORDER BY BIRTHDATE DESC;
+
+select * from orders O JOIN customer C ON c.customer_id=O.customer_id where c.country='USA' Order by O.orderDate DESC;
+
+SELECT Customer_ID,COUNT(Order_ID) AS TotalOrders FROM Orders GROUP BY Customer_ID;
+SELECT City, COUNT(Customer_ID) AS TotalCustomers FROM Customer GROUP BY City;
+SELECT Customer_ID, COUNT(Order_ID) AS TotalOrders
+FROM Orders GROUP BY Customer_ID HAVING COUNT(Order_ID) > 2;
+SELECT Customer_ID, COUNT(Order_ID) AS TotalOrders FROM Orders GROUP BY Customer_ID HAVING COUNT(OrderID) > 2;
+SELECT City, COUNT(Customer_ID) AS TotalCustomers FROM Customer GROUP BY City HAVING COUNT(Customer_ID) >= 3;
